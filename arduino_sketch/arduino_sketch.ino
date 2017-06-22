@@ -97,20 +97,9 @@ int rainAnalog = 1023-analogRead(A0);
     //sending as less data as possible
 byte toSend[2]; //<20b payload
 toSend[0] = rain<<7|rainAnalog/8;
-toSend[1] = UVindex;
+toSend[1] = UVindex/10;
 toSend[2] = Visible/257;
 
-/*
-toSend += ", \"I\":";
-toSend += IR;
-toSend += ", \"U\":";
-toSend += UVindex;
-toSend += ", \"R\":";
-toSend += !rain; //inverted logic
-toSend += ", \"A\":";
-toSend += 1024-rainAnalog;
-toSend += "}";
-*/
 Serial.println(toSend[0]);
 
 myLora.txBytes(toSend, 3);
