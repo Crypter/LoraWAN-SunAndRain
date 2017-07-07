@@ -3,7 +3,8 @@
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json");
 
-echo get_remote_data("https://sun-and-rain.data.thethingsnetwork.org".substr($_SERVER[REQUEST_URI], 13));
+//echo "https://sun-and-rain.data.thethingsnetwork.org".substr($_SERVER[REQUEST_URI], 24);
+echo get_remote_data("https://sun-and-rain.data.thethingsnetwork.org".substr($_SERVER[REQUEST_URI], 24));
 
 function get_remote_data($url, $post_paramtrs = false) {
     $c = curl_init();
