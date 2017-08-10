@@ -2,7 +2,7 @@
 #include "rn2xx3.h"
 #include <SoftwareSerial.h>
 #include <Wire.h>
-
+#include <ESP8266WiFi.h>
 
 //#define D4 2
 //#define D5 14
@@ -24,11 +24,16 @@ Adafruit_SI1145 uv = Adafruit_SI1145();
 
 // the setup routine runs once when you press reset:
 void setup() {
+  //lets waste less energy
+  WiFi.forceSleepBegin();
+  delay (10);
+
 
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   mySerial.begin(9600);
-
+  delay(1);
+  
   Serial.println("Startup");
 
 
@@ -95,14 +100,16 @@ bool rain=1-digitalRead(RainPIN);
 int rainAnalog = 1023-analogRead(A0);
 
     //sending as less data as possible
-byte toSend[2]; //<20b payload
+byte toSend[3]; //<20b payload
 toSend[0] = rain<<7|rainAnalog/8;
 toSend[1] = UVindex/10;
 toSend[2] = Visible/257;
 
-Serial.println(toSend[0]);
+Serial.print(toSend[0]);
+Serial.print(toSend[1]);
+Serial.println(toSend[2]);
 
 myLora.txBytes(toSend, 3);
 
-    for (int i=0; i<15; i++) delay(60000); //Send every minute (maybe you need to tune this)
+    for (int i=0; i<(5*60); i++) delay(1000); //Send every minute (maybe you need to tune this)
 }
